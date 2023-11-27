@@ -10,11 +10,16 @@ import User from "./pages/User/User";
 import NewUser from "./pages/New User/NewUser";
 import Product from "./pages/Product/Product";
 import NewProduct from "./pages/New Product/NewProduct";
+import Login from "./pages/Login/Login";
+import { Provider } from "react-redux";
+import store from "./Redux/store";
+
+const user = false;
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: user ? <App /> : <Login />,
     children: [
       {
         index: true,
@@ -54,7 +59,7 @@ export const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <Provider store={store}>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </Provider>
 );

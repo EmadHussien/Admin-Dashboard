@@ -1,0 +1,55 @@
+.Container{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.5)
+      ),
+      url("https://img.freepik.com/free-photo/shopping-discounts-concept-young-stylish-modern-girl-posing-with-credit-card-looking-happy-s_1258-120032.jpg?w=1060&t=st=1694064130~exp=1694064730~hmac=66ab83ac5114477cf92eab9a4f28168981d811928fe6930476b20a616e6078e2")
+        center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Wrapper{ width: 25%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+.Title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.Form{
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.Input {
+
+    flex: 1;
+    min-width: 40%;
+    margin: 10px 0;
+    padding: 10px;
+    font-family: monospace;
+}
+.Button{
+
+    margin: 12px 0;
+    padding: 10px;
+    font-weight: 500;
+    background-color: teal;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 30%;
+   
+}
+.Button:hover{
+    background-color: lightseagreen;    
+}
