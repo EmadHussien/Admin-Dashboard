@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 export default function WidgetSm() {
   const { userRequests } = useUserRequests();
+  console.log("first");
   const [latsetUsers, setLatestUsers] = useState([
     {
       _id: 1,
@@ -43,7 +44,7 @@ export default function WidgetSm() {
         console.log(e);
       }
     }
-    if (latsetUsers) getLatest5Users();
+    if (latsetUsers[0]._id === 1) getLatest5Users();
   });
 
   return (
