@@ -18,6 +18,7 @@
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 
 }
 .icons-container{
@@ -52,3 +53,31 @@
     cursor: pointer;
     border-radius: 50%;
 }
+
+/* Accordion styles */
+.accordion {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 15px;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .accordion button {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    border: none;
+    background-color: #333;
+    cursor: pointer;
+  }
+  
+  .accordion button:hover {
+    background-color: #555;
+  }

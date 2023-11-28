@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -13,13 +12,16 @@ import NewProduct from "./pages/New Product/NewProduct";
 import Login from "./pages/Login/Login";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
-
-const user = false;
+import LogginGuard from "./components/LogginGuard";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: user ? <App /> : <Login />,
+    element: (
+      <LogginGuard>
+        <App />
+      </LogginGuard>
+    ),
     children: [
       {
         index: true,
@@ -50,6 +52,10 @@ export const router = createBrowserRouter([
         element: <NewProduct />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 
   {

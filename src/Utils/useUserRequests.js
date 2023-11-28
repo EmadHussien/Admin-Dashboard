@@ -2,15 +2,15 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import getNewAccessToken from "./getNewAccessToken";
-import { setNewToken } from "../redux/userSlice";
+import { setNewToken } from "../Redux/AuthSlice";
 
 export default function useUserRequests() {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.user?.currentUser?.accessToken);
+  const { token } = useSelector((state) => state.Auth);
 
   // creating axios object for user requests
   const userRequests = axios.create({
-    baseURL: "https://e-commerce-backend-two-rouge.vercel.app",
+    baseURL: "http://localhost:5000",
     withCredentials: true,
   });
 

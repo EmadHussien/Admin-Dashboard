@@ -1,48 +1,30 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { getToken } from "../../Redux/AuthSlice";
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { LogIn } from "../../Redux/AuthSlice";
 import "./Login.css";
 
 export default function Login() {
+  const { token, isLoading, error, isAdmin } = useSelector(
+    (state) => state.Auth
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    if (token && isAdmin) {
+      navigate("/");
+    }
+  }, [token]);
+
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
 
   async function Login() {
-    dispatch(getToken(user));
-
-    /* try {
-      const res = await axios.post(
-        "https://e-commerce-backend-two-rouge.vercel.app/auth/login",
-        user,
-        {
-          withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (res.status === 200) {
-        setMsg("");
-        /*         dispatch(addUser({ ...res.data }));
-          navigate("/");
-      }
-    } catch (error) {
-      if (error.response.status === 401 || error.response.status === 500) {
-        setMsg(
-          "Login failed. Please double check your credentials and try again."
-        );
-      }
-    } */
+    dispatch(LogIn(user));
   }
 
   function handleChange(e) {
@@ -60,6 +42,8 @@ export default function Login() {
     <div className="Container">
       <div className="Wrapper">
         <h1 className="Title">SIGN IN</h1>
+        <p>username: Admin</p>
+        <p>password: admin</p>
         <form className="Form" onSubmit={handleSubmit}>
           <input
             className="Input"
@@ -81,13 +65,17 @@ export default function Login() {
           <button className="Button">LOGIN</button>
           <p
             style={{
-              color: "red",
+              color: token && isAdmin ? "green" : isLoading ? "blue" : "red",
               marginBottom: "20px",
               width: "80%",
               fontSize: "14px",
             }}
           >
-            {msg}
+            {isLoading ? "Loading..." : ""}
+            {token && isAdmin ? "Login Successed" : ""}
+            {error || (token && !isAdmin && !isLoading)
+              ? "Login failed. Please double check your credentials and try again."
+              : ""}
           </p>
         </form>
       </div>

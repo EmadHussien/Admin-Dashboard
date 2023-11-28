@@ -4,8 +4,12 @@ import "./Home.css";
 import { userData } from "../../dummyData";
 import WidgetSm from "../../components/WidgetSm/WidgetSm";
 import WidgetLg from "../../components/WidgetLg/WidgetLg";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  });
   return (
     <div className="home-container">
       <FeaturedInfo />
