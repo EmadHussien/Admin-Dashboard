@@ -82,7 +82,6 @@ export default function NewProduct() {
         categories: "",
         color: "",
       });
-      setFile(null);
     }
   }, [fulfilled]);
   return (
