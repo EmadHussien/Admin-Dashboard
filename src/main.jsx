@@ -1,11 +1,16 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import App from "./App";
 import UserList from "./pages/UserList/UserList";
 import Home from "./pages/Home/Home";
 import ProductList from "./pages/ProductList/ProductList";
-import User from "./pages/User/User";
+/* import User from "./pages/User/User";
+ */
 import NewUser from "./pages/New User/NewUser";
 import Product from "./pages/Product/Product";
 import NewProduct from "./pages/New Product/NewProduct";
@@ -36,10 +41,6 @@ export const router = createBrowserRouter([
         element: <ProductList />,
       },
       {
-        path: "/user/:userId",
-        element: <User />,
-      },
-      {
         path: "/new-user",
         element: <NewUser />,
       },
@@ -60,7 +61,7 @@ export const router = createBrowserRouter([
 
   {
     path: "*",
-    element: <div>Error</div>,
+    element: <Navigate to="/" />,
   },
 ]);
 

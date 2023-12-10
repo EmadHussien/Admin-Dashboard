@@ -7,7 +7,7 @@ export const LogIn = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await axios.post(
-        "http://localhost:5000/auth/login",
+        "https://e-commerce-backend-two-rouge.vercel.app/auth/login",
         adminCredintials,
         {
           withCredentials: true,
@@ -28,7 +28,7 @@ export const logOut = createAsyncThunk("Auth/Logout", async (_, thunkAPI) => {
   const { rejectWithValue } = thunkAPI;
   try {
     const res = await axios.post(
-      "http://localhost:5000/logout",
+      "https://e-commerce-backend-two-rouge.vercel.app/logout",
       {},
       {
         withCredentials: true,

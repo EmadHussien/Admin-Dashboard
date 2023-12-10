@@ -2,24 +2,33 @@ import "./ProductList.css";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
-import { productRows } from "../../dummyData";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProduct, getProducts } from "../../Redux/ProductSlice";
+import CircularProgress from "@mui/material/CircularProgress";
+import useUserRequests from "../../Utils/useUserRequests";
 
 export default function ProductList() {
-  const [dataGridRows, setDataGridRows] = useState(productRows);
+  const dispatch = useDispatch();
+  const { userRequests } = useUserRequests();
+  const { products, isLoading, fulfilled, error } = useSelector(
+    (state) => state.Product
+  );
 
-  function handleDeleteRow(rowID) {
-    console.log(rowID);
-    const newData = dataGridRows.filter((row) => row.id !== rowID);
-    setDataGridRows(newData);
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+
+  function handleDeleteRow(productId) {
+    dispatch(deleteProduct({ userRequests, productId }));
   }
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 220 },
     {
       field: "name",
       headerName: "Product",
-      width: 260,
+      width: 330,
       renderCell: (params) => {
         return (
           <div className="productList-product-container">
@@ -33,17 +42,11 @@ export default function ProductList() {
         );
       },
     },
-    { field: "stock", headerName: "Stock", width: 120 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
-
+    { field: "stock", headerName: "Stock", width: 100 },
     {
       field: "price",
       headerName: "Price",
-      width: 150,
+      width: 120,
     },
     {
       field: "action",
@@ -68,18 +71,45 @@ export default function ProductList() {
   return (
     <div className="productList">
       <div style={{ height: "100%", width: "100%" }}>
-        <DataGrid
-          disableRowSelectionOnClick
-          rows={dataGridRows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-        />
+        {isLoading ? (
+          <div
+            style={{
+              height: "60vh",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress style={{ color: "darkblue" }} />
+          </div>
+        ) : (
+          products && (
+            <DataGrid
+              disableRowSelectionOnClick
+              rows={products}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 10 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+              checkboxSelection
+            />
+          )
+        )}
+
+        {fulfilled && (
+          <p style={{ color: "green", textAlign: "center", fontSize: "22px" }}>
+            Product has been deleted successfully
+          </p>
+        )}
+        {error && (
+          <p style={{ color: "red", textAlign: "center", fontSize: "22px" }}>
+            Error try again later...
+          </p>
+        )}
       </div>
     </div>
   );

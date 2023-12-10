@@ -30,3 +30,17 @@
     cursor: pointer;
     color: red;
 }
+
+.user-add-btn
+{
+    padding: 8px;
+    background-color: teal;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 80px;
+    text-decoration: none;
+    text-align: center;
+}

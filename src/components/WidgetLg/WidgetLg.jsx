@@ -1,10 +1,56 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import "./WidgetLg.css";
+import { format } from "timeago.js";
 
-export default function WidgetLg() {
-  const Button = ({ type }) => {
-    return <button className={"widgetLg-button " + type}>{type}</button>;
-  };
+const Button = ({ type }) => {
+  return <button className={"widgetLg-button " + type}>{type}</button>;
+};
+
+export default function WidgetLg({ ordersData }) {
+  const [orders, setOrders] = useState([
+    {
+      _id: 1,
+      username: "EmadHussien98",
+      amount: 500,
+      status: "Approved",
+    },
+    {
+      _id: 2,
+      username: "EmadHussien98",
+      amount: 500,
+      status: "Pending",
+    },
+    {
+      _id: 3,
+      username: "EmadHussien98",
+      amount: 500,
+      status: "Pending",
+    },
+    {
+      _id: 4,
+      username: "EmadHussien98",
+      amount: 500,
+      status: "Pending",
+    },
+    {
+      _id: 5,
+      username: "EmadHussien98",
+      amount: 500,
+      status: "Pending",
+    },
+    {
+      _id: 6,
+      username: "EmadHussien98",
+      amount: 500,
+      status: "Pending",
+    },
+  ]);
+
+  useEffect(() => {
+    setOrders(ordersData);
+  }, [ordersData]);
+
   return (
     <div className="widgetLg-container">
       <h3 className="widgetLg-title">Latest transcations</h3>
@@ -18,83 +64,31 @@ export default function WidgetLg() {
           </tr>
         </thead>
         <tbody>
-          <tr className="widgetLg-tr">
-            <td className="widgetLg-user">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="user image"
-                className="widgetLg-img"
-              />
-              <span className="widgetLg-username">Susan Carol</span>
-            </td>
-            <td className="widgetLg-date">12 Sep 2023</td>
-            <td className="widgetLg-amount">$220.00</td>
-            <td className="widgetLg-status">
-              <Button type="Approved" />
-            </td>
-          </tr>
-
-          <tr className="widgetLg-tr">
-            <td className="widgetLg-user">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="user image"
-                className="widgetLg-img"
-              />
-              <span className="widgetLg-username">Susan Carol</span>
-            </td>
-            <td className="widgetLg-date">12 Sep 2023</td>
-            <td className="widgetLg-amount">$220.00</td>
-            <td className="widgetLg-status">
-              <Button type="Pending" />
-            </td>
-          </tr>
-
-          <tr className="widgetLg-tr">
-            <td className="widgetLg-user">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="user image"
-                className="widgetLg-img"
-              />
-              <span className="widgetLg-username">Susan Carol</span>
-            </td>
-            <td className="widgetLg-date">12 Sep 2023</td>
-            <td className="widgetLg-amount">$220.00</td>
-            <td className="widgetLg-status">
-              <Button type="Declined" />
-            </td>
-          </tr>
-          <tr className="widgetLg-tr">
-            <td className="widgetLg-user">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="user image"
-                className="widgetLg-img"
-              />
-              <span className="widgetLg-username">Susan Carol</span>
-            </td>
-            <td className="widgetLg-date">12 Sep 2023</td>
-            <td className="widgetLg-amount">$220.00</td>
-            <td className="widgetLg-status">
-              <Button type="Declined" />
-            </td>
-          </tr>
-          <tr className="widgetLg-tr">
-            <td className="widgetLg-user">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="user image"
-                className="widgetLg-img"
-              />
-              <span className="widgetLg-username">Susan Carol</span>
-            </td>
-            <td className="widgetLg-date">12 Sep 2023</td>
-            <td className="widgetLg-amount">$220.00</td>
-            <td className="widgetLg-status">
-              <Button type="Declined" />
-            </td>
-          </tr>
+          {orders &&
+            orders.map((order) => {
+              return (
+                <tr className="widgetLg-tr" key={order._id}>
+                  <td className="widgetLg-user">
+                    <img
+                      src={
+                        order.userImg ||
+                        "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
+                      }
+                      alt="user image"
+                      className="widgetLg-img"
+                    />
+                    <span className="widgetLg-username">
+                      {order.username || "Susan Carol"}
+                    </span>
+                  </td>
+                  <td className="widgetLg-date">{format(order.createdAt)}</td>
+                  <td className="widgetLg-amount">${order.amount}</td>
+                  <td className="widgetLg-status">
+                    <Button type={order.status} />
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>

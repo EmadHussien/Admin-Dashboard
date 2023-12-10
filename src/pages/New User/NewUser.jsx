@@ -1,25 +1,148 @@
+import { useEffect, useState } from "react";
 import "./NewUser.css";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../../Utils/Firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser } from "../../Redux/UserSlice";
 
 export default function NewUser() {
+  const { isLoading, error, fulfilled } = useSelector((state) => state.User);
+  const dispatch = useDispatch();
+  const [file, setFile] = useState();
+  const [passErr, setPassErr] = useState();
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmedPassword: "",
+  });
+  function handleChange(e) {
+    setUser((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  }
+  function handleSubmit(e) {
+    setPassErr("");
+    e.preventDefault();
+    if (user.password !== user.confirmedPassword) {
+      setPassErr("Please enter matching passwords");
+    } else {
+      const fileName = new Date().getTime() + file.name;
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log("Error uploading image", error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            const newUser = {
+              ...user,
+              img: downloadURL,
+            };
+            dispatch(createUser(newUser));
+          });
+        }
+      );
+    }
+  }
+  useEffect(() => {
+    if (fulfilled) {
+      setUser({ username: "", email: "", password: "", confirmedPassword: "" });
+      setFile("");
+    }
+  }, [fulfilled]);
   return (
     <div className="new-user">
       <h1 className="new-user-title">New User</h1>
-      <form className="new-user-Form">
-        <div className="new-user-item">
-          <label>Username</label>
-          <input type="text" placeholder="john" />
+      <form className="new-user-Form" onSubmit={handleSubmit}>
+        <div className="add-product-item">
+          <label>Image</label>
+          <input
+            type="file"
+            id="file"
+            required
+            onChange={(e) => setFile(e.target.files[0])}
+          />
         </div>
         <div className="new-user-item">
-          <label>Full Name</label>
-          <input type="text" placeholder="John Smith" />
+          <label>Username</label>
+          <input
+            type="text"
+            placeholder="john"
+            required
+            onChange={handleChange}
+            name="username"
+            value={user.username}
+          />
         </div>
         <div className="new-user-item">
           <label>Email</label>
-          <input type="email" placeholder="john@gmail.com" />
+          <input
+            type="email"
+            placeholder="john@gmail.com"
+            required
+            onChange={handleChange}
+            value={user.email}
+            name="email"
+          />
         </div>
         <div className="new-user-item">
           <label>Password</label>
-          <input type="password" placeholder="password" />
+          <input
+            type="password"
+            placeholder="password"
+            required
+            onChange={handleChange}
+            value={user.password}
+            name="password"
+          />
+        </div>
+        <div className="new-user-item">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            placeholder="password"
+            name="confirmedPassword"
+            required
+            onChange={handleChange}
+            value={user.confirmedPassword}
+          />
+        </div>
+        {passErr && (
+          <p style={{ color: "red", margin: "10px 0" }}> {passErr} </p>
+        )}
+        <button className="new-user-button">Create</button>
+        {isLoading && (
+          <p style={{ color: "blue", textAlign: "center", fontSize: "22px" }}>
+            Loading...
+          </p>
+        )}
+        {fulfilled && (
+          <p style={{ color: "green", textAlign: "center", fontSize: "22px" }}>
+            New User has been added successfully
+          </p>
+        )}
+        {error && (
+          <p style={{ color: "red", textAlign: "center", fontSize: "22px" }}>
+            Username or Email is already taken
+          </p>
+        )}
+        {/*  <div className="new-user-item">
+          <label>Full Name</label>
+          <input type="text" placeholder="John Smith" />
         </div>
         <div className="new-user-item">
           <label>Phone</label>
@@ -47,8 +170,8 @@ export default function NewUser() {
             <option value="no">No</option>
           </select>
         </div>
+ */}{" "}
       </form>
-      <button className="new-user-button">Create</button>
     </div>
   );
 }

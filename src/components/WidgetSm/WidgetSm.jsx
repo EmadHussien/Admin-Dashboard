@@ -1,11 +1,10 @@
 import "./WidgetSm.css";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import useUserRequests from "../../Utils/useUserRequests";
 import { useEffect, useState } from "react";
+/* import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
-
-export default function WidgetSm() {
-  const { userRequests } = useUserRequests();
+ */
+// eslint-disable-next-line react/prop-types
+export default function WidgetSm({ usersData }) {
   const [latsetUsers, setLatestUsers] = useState([
     {
       _id: 1,
@@ -27,24 +26,18 @@ export default function WidgetSm() {
       _id: 5,
       username: "EmadHussien98",
     },
+    {
+      _id: 6,
+      username: "EmadHussien98",
+    },
+    {
+      _id: 7,
+      username: "EmadHussien98",
+    },
   ]);
   useEffect(() => {
-    async function getLatest5Users() {
-      try {
-        const res = await userRequests.get(
-          "/users?new=true",
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-        setLatestUsers(res.data);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    getLatest5Users();
-  }, []);
+    setLatestUsers(usersData);
+  }, [usersData]);
 
   return (
     <div className="widgetSm-container">
@@ -55,7 +48,10 @@ export default function WidgetSm() {
             return (
               <li className="widgetSm-listItem" key={user._id}>
                 <img
-                  src="https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"
+                  src={
+                    user.img ||
+                    "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
+                  }
                   alt="user image"
                   className="widgetSm-img"
                 />
@@ -63,9 +59,9 @@ export default function WidgetSm() {
                   <span className="widgetSm-username">{user.username}</span>
                   <span className="widgetSm-jobtitle"> Customer </span>
                 </div>
-                <Link className="widgetSm-button" to={`/user/${user._id}`}>
+                {/*    <Link className="widgetSm-button" to={`/user/${user._id}`}>
                   <VisibilityIcon className="widgetSm-icon" /> Display
-                </Link>
+                </Link> */}
               </li>
             );
           })}

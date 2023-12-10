@@ -10,7 +10,7 @@ export default function useUserRequests() {
 
   // creating axios object for user requests
   const userRequests = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://e-commerce-backend-two-rouge.vercel.app",
     withCredentials: true,
   });
 

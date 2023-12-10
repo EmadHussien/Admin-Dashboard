@@ -6,7 +6,21 @@
 .add-product-form {
     margin-top: 10px;
   }
-  
+  .form-flex{
+    width: 55%;
+    display: flex;
+    justify-content: space-between;
+  }
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
   .add-product-item {
     width: 250px;
     display: flex;
