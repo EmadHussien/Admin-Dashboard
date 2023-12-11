@@ -17,7 +17,8 @@ import {
 import app from "../../Utils/Firebase";
 
 export default function Product() {
-  const { isLoading, error, fulfilled } = useSelector((state) => state.Product);
+  const { error, fulfilled } = useSelector((state) => state.Product);
+  const [showSuccessMessage, setShowSuccessMessage] = useState("init");
 
   const [updatedProduct, setUpdatedProduct] = useState({
     title: "",
@@ -48,6 +49,16 @@ export default function Product() {
   const product = useSelector((state) =>
     state.Product.products?.find((p) => p.id === productId)
   );
+
+  useEffect(() => {
+    if (fulfilled) {
+      setUpdatedProduct({
+        title: "",
+        price: "",
+        inStock: true,
+      });
+    }
+  }, [fulfilled]);
   useEffect(() => {
     async function fetchProductStats() {
       try {
@@ -102,6 +113,7 @@ export default function Product() {
       const storageRef = ref(storage, fileName);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
+      setShowSuccessMessage("start");
 
       uploadTask.on(
         "state_changed",
@@ -123,15 +135,34 @@ export default function Product() {
                 userRequests,
                 productId,
               })
-            );
+            )
+              .then(() => {
+                setShowSuccessMessage("uploaded");
+                setTimeout(() => {
+                  setShowSuccessMessage("init");
+                }, 500);
+              })
+              .catch((error) => {
+                console.error("Error deleting user:", error);
+              });
           });
         }
       );
     } else {
       //  console.log(updatedProduct);
+      setShowSuccessMessage("start");
       dispatch(
         editProduct({ newProduct: updatedProduct, userRequests, productId })
-      );
+      )
+        .then(() => {
+          setShowSuccessMessage("uploaded");
+          setTimeout(() => {
+            setShowSuccessMessage("init");
+          }, 500);
+        })
+        .catch((error) => {
+          console.error("Error deleting user:", error);
+        });
     }
   }
   return (
@@ -251,12 +282,12 @@ export default function Product() {
             <button className="product-form-btn">Update</button>
           </div>
         </form>
-        {isLoading && (
+        {showSuccessMessage === "start" && (
           <p style={{ color: "blue", textAlign: "center", fontSize: "22px" }}>
             Loading...
           </p>
         )}
-        {fulfilled && (
+        {showSuccessMessage === "uploaded" && (
           <p style={{ color: "green", textAlign: "center", fontSize: "22px" }}>
             Product has been Updated successfully
           </p>

@@ -38,13 +38,13 @@ export default function WidgetSm({ usersData }) {
   useEffect(() => {
     setLatestUsers(usersData);
   }, [usersData]);
-
   return (
     <div className="widgetSm-container">
       <h3 className="widgetSm-title">New Joined Members</h3>
       <ul className="widgetSm-list">
         {latsetUsers &&
           latsetUsers.map((user) => {
+            if (user.username === "Admin") return null;
             return (
               <li className="widgetSm-listItem" key={user._id}>
                 <img

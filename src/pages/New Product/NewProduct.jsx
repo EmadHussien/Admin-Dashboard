@@ -12,9 +12,11 @@ import useUserRequests from "../../Utils/useUserRequests";
 import { createProduct } from "../../Redux/ProductSlice";
 
 export default function NewProduct() {
-  const { isLoading, error, fulfilled } = useSelector((state) => state.Product);
+  const { error, fulfilled } = useSelector((state) => state.Product);
   const dispatch = useDispatch();
   const { userRequests } = useUserRequests();
+  const [showSuccessMessage, setShowSuccessMessage] = useState("init");
+
   const [productData, setProductData] = useState({
     title: "",
     description: "",
@@ -51,6 +53,7 @@ export default function NewProduct() {
     const storageRef = ref(storage, fileName);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
+    setShowSuccessMessage("start");
 
     uploadTask.on(
       "state_changed",
@@ -66,7 +69,16 @@ export default function NewProduct() {
             img: downloadURL,
           };
           //dispatch createProduct
-          dispatch(createProduct({ product, userRequests }));
+          dispatch(createProduct({ product, userRequests }))
+            .then(() => {
+              setShowSuccessMessage("uploaded");
+              setTimeout(() => {
+                setShowSuccessMessage("init");
+              }, 1000);
+            })
+            .catch((error) => {
+              console.error("Error deleting user:", error);
+            });
         });
       }
     );
@@ -190,12 +202,12 @@ export default function NewProduct() {
         </div>
         <button className="add-product-btn">Create</button>
       </form>
-      {isLoading && (
+      {showSuccessMessage === "start" && (
         <p style={{ color: "blue", textAlign: "center", fontSize: "22px" }}>
           Loading...
         </p>
       )}
-      {fulfilled && (
+      {showSuccessMessage === "uploaded" && (
         <p style={{ color: "green", textAlign: "center", fontSize: "22px" }}>
           Product has been added successfully
         </p>

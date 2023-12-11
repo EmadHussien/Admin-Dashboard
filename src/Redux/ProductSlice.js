@@ -103,6 +103,7 @@ const ProductSlice = createSlice({
       .addCase(createProduct.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.fulfilled = false;
       })
       .addCase(createProduct.fulfilled, (state) => {
         state.isLoading = false;
@@ -116,6 +117,7 @@ const ProductSlice = createSlice({
       .addCase(editProduct.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.fulfilled = false;
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -123,7 +125,7 @@ const ProductSlice = createSlice({
         state.fulfilled = true;
         const updatedProduct = action.payload;
         const indexToUpdate = state.products.findIndex(
-          (item) => item._id === updatedProduct._id
+          (item) => item.id === updatedProduct._id
         );
 
         const { _id, title, price, inStock, img } = updatedProduct;

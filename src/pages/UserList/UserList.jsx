@@ -23,7 +23,7 @@ export default function UserList() {
         // Reset success message after 3 seconds
         setTimeout(() => {
           setShowSuccessMessage(false);
-        }, 3000);
+        }, 1000);
       })
       .catch((error) => {
         // Handle error if needed

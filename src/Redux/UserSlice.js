@@ -74,17 +74,25 @@ const UserSlice = createSlice({
       .addCase(getUsers.fulfilled, (state, action) => {
         state.isLoading = false;
         const extractedData = action.payload.map(
-          ({ _id, username, img, email }) => ({
-            id: _id,
-            username,
-            avatar:
-              img ||
-              "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif",
-            email,
-            status: "Active",
-          })
+          ({ _id, username, img, email }) => {
+            if (username === "Admin") {
+              return null; // Skip processing this user
+            }
+
+            return {
+              id: _id,
+              username,
+              avatar:
+                img ||
+                "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif",
+              email,
+              status: "Active",
+            };
+          }
         );
-        state.Users = extractedData;
+
+        // Filter out null values and update state.Users
+        state.Users = extractedData.filter((user) => user !== null);
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.isLoading = false;
@@ -93,6 +101,7 @@ const UserSlice = createSlice({
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.fulfilled = false;
       })
       .addCase(createUser.fulfilled, (state) => {
         state.isLoading = false;

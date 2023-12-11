@@ -11,10 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../Redux/UserSlice";
 
 export default function NewUser() {
-  const { isLoading, error, fulfilled } = useSelector((state) => state.User);
+  const { error, fulfilled } = useSelector((state) => state.User);
   const dispatch = useDispatch();
   const [file, setFile] = useState();
   const [passErr, setPassErr] = useState();
+  const [showSuccessMessage, setShowSuccessMessage] = useState("init");
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -38,6 +39,7 @@ export default function NewUser() {
       const storageRef = ref(storage, fileName);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
+      setShowSuccessMessage("start");
 
       uploadTask.on(
         "state_changed",
@@ -52,7 +54,16 @@ export default function NewUser() {
               ...user,
               img: downloadURL,
             };
-            dispatch(createUser(newUser));
+            dispatch(createUser(newUser))
+              .then(() => {
+                setShowSuccessMessage("uploaded");
+                setTimeout(() => {
+                  setShowSuccessMessage("init");
+                }, 1000);
+              })
+              .catch((error) => {
+                console.error("Error deleting user:", error);
+              });
           });
         }
       );
@@ -61,7 +72,6 @@ export default function NewUser() {
   useEffect(() => {
     if (fulfilled) {
       setUser({ username: "", email: "", password: "", confirmedPassword: "" });
-      setFile("");
     }
   }, [fulfilled]);
   return (
@@ -125,12 +135,12 @@ export default function NewUser() {
           <p style={{ color: "red", margin: "10px 0" }}> {passErr} </p>
         )}
         <button className="new-user-button">Create</button>
-        {isLoading && (
+        {showSuccessMessage === "start" && (
           <p style={{ color: "blue", textAlign: "center", fontSize: "22px" }}>
             Loading...
           </p>
         )}
-        {fulfilled && (
+        {showSuccessMessage === "uploaded" && (
           <p style={{ color: "green", textAlign: "center", fontSize: "22px" }}>
             New User has been added successfully
           </p>
