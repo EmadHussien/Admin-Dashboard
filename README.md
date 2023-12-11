@@ -104,3 +104,8 @@ This project is licensed under the [MIT License](LICENSE).
 - Special thanks to [Firebase](https://firebase.google.com/) for simplifying data storage and image uploads.
 
 Embark on a digital odyssey with E&H, where every line of code is a brushstroke painting the canvas of innovation.
+
+### Home Page Screenshot
+<img src="https://github.com/EmadHussien/Admin-Dashboard/assets/31719363/40704e90-6b8b-42b6-a1ac-3a415dd1b36e"  />
+
+
