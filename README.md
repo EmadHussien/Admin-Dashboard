@@ -73,7 +73,7 @@ Unleash the power of React and Node.js, seamlessly integrated to provide a seaml
 2. Install dependencies:
 
    ```bash
-   cd your-repo
+   cd Admin-Dashboard
    npm install
    ```
 
