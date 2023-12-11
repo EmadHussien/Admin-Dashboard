@@ -57,6 +57,8 @@ Unleash the power of React and Node.js, seamlessly integrated to provide a seaml
 
 ## Getting Started
 
+Note: This project requires environment variables for configuration, including database connection details and other sensitive information. As the .env file is not included in this repository for security reasons, you will need to set up your environment variables.
+
 ### Prerequisites
 
 - Node.js installed
@@ -106,6 +108,5 @@ This project is licensed under the [MIT License](LICENSE).
 Embark on a digital odyssey with E&H, where every line of code is a brushstroke painting the canvas of innovation.
 
 ### Home Page Screenshot
+
 <img src="https://github.com/EmadHussien/Admin-Dashboard/assets/31719363/40704e90-6b8b-42b6-a1ac-3a415dd1b36e"  />
-
-
